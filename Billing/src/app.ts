@@ -12,6 +12,8 @@ amqp.connect('amqp://192.168.100.9:5672', (error, connection) => {
       durable: true,
     })
 
+    EventManager.eventEmitter = channel
+
     channel.assertQueue(
       '',
       {

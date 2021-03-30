@@ -1,5 +1,6 @@
 import { Channel } from 'amqplib/callback_api'
 import { EventsTypes } from './EventsTypes'
+import { OrderData } from './Types'
 import { UserWithBilling } from './UserWithBilling'
 
 export class EventManager {
@@ -14,7 +15,7 @@ export class EventManager {
 
   static createEvent() {}
 
-  static handleEvents(data: { [key: string]: any }) {
+  static handleEvents(data: OrderData) {
     console.log(`Received Event ${data.typeEvent}`)
     switch (data.typeEvent as EventsTypes) {
       case 'ORDER_PROCESSING_COMPLETED':
@@ -25,9 +26,14 @@ export class EventManager {
     }
   }
 
-  static productPayment(data: { [key: string]: any }) {
+  static productPayment(data: OrderData) {
     console.log(`price product is ${data.price}`)
 
+    EventManager.eventEmitter.publish(
+      'ecommerce-app',
+      'event-ecommerce',
+      Buffer.from('Message Billing')
+    )
     console.log('payment article')
   }
 }
