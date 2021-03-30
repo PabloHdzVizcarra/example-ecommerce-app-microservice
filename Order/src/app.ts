@@ -1,8 +1,7 @@
 import app from '.'
 import amqp from 'amqplib/callback_api'
 
-import { orderController } from './infrastucture/infrastructure'
-import { EventEmitter } from './application/EventEmitter'
+import { orderController } from './infrastucture/orderController'
 
 amqp.connect('amqp://192.168.100.9:5672', (error, connection) => {
   if (error) throw error
@@ -13,8 +12,6 @@ amqp.connect('amqp://192.168.100.9:5672', (error, connection) => {
     channel.assertExchange('ecommerce-app', 'topic', {
       durable: true,
     })
-
-    new EventEmitter(channel)
 
     console.log('connect to RabbitMQ')
   })

@@ -6,5 +6,6 @@ export function orderController(req: Request, res: Response) {
 
   const product = new OrderProduct(name, nameProduct, price, quantity)
   console.log(product.toJson())
+
   res.send('orderController')
 }
