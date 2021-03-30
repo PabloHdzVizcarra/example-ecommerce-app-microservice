@@ -32,7 +32,12 @@ export class EventManager {
     EventManager.eventEmitter.publish(
       'ecommerce-app',
       'event-ecommerce',
-      Buffer.from('Message Billing')
+      Buffer.from(
+        JSON.stringify({
+          name: 'billing event',
+          typeEvent: 'BILLING',
+        })
+      )
     )
     console.log('payment article')
   }

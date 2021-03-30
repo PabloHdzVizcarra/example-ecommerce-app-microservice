@@ -1,5 +1,5 @@
 import { Channel } from 'amqplib/callback_api'
-import { EventsTypes } from '../types/EventsTypes'
+import { BillingData, EventsTypes, OrderData } from '../types/EventsTypes'
 import { DataOrderProduct } from './OrderProduct'
 
 export class EventManager {
@@ -17,6 +17,16 @@ export class EventManager {
     )
 
     console.log(`Sent event ${dataToSent.typeEvent}`)
+  }
+
+  static handleEvents(data: BillingData) {
+    console.log(`${data.typeEvent}`)
+    // switch (data.typeEvent as EventsTypes) {
+    //   case 'ORDER_PROCESSING_COMPLETED':
+    //     break
+    //   case 'PAYMENT_PROCESSING_COMPLETED':
+    //     break
+    // }
   }
 
   static addEventField(data: DataOrderProduct, event: EventsTypes) {

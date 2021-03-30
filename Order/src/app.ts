@@ -3,6 +3,7 @@ import amqp from 'amqplib/callback_api'
 
 import { orderController } from './infrastucture/orderController'
 import { EventManager } from './domain/EventManager'
+import { BillingData } from './types/EventsTypes'
 
 amqp.connect('amqp://192.168.100.9:5672', (error, connection) => {
   if (error) throw error
@@ -15,6 +16,22 @@ amqp.connect('amqp://192.168.100.9:5672', (error, connection) => {
     })
 
     new EventManager(channel)
+
+    channel.assertQueue(
+      '',
+      {
+        exclusive: true,
+      },
+      (error, queue) => {
+        if (error) throw error
+
+        channel.bindQueue(queue.queue, 'ecommerce-app', 'event-ecommerce')
+        channel.consume(queue.queue, (message) => {
+          const data = JSON.parse(message.content.toString())
+          EventManager.handleEvents(data as BillingData)
+        })
+      }
+    )
 
     console.log('connect to RabbitMQ')
   })
