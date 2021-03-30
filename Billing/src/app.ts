@@ -21,7 +21,7 @@ amqp.connect('amqp://192.168.100.9:5672', (error, connection) => {
         if (error) throw error
 
         channel.bindQueue(queue.queue, 'ecommerce-app', 'event-ecommerce')
-        new EventManager(channel)
+        new EventManager(channel, { name: 'Pablo', money: 300 })
 
         channel.consume(queue.queue, (message) => {
           const data = JSON.parse(message.content.toString())
