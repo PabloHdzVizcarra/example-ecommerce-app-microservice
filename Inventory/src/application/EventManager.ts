@@ -1,5 +1,5 @@
 import { Channel } from 'amqplib/callback_api'
-import { dataOrderDispatched, InventoryEvent, PaymentData } from './Types'
+import { InventoryEvent, PaymentData } from './Types'
 
 export class EventManager {
   static eventEmitter: Channel
@@ -34,21 +34,10 @@ export class EventManager {
       quantity: 10
     }
 
-    const dataOrderDispatched: dataOrderDispatched = {
-      typeEvent: 'ORDER_DISPATCHED',
-      idOrder: '125dfgy78',
-      status: true
-    }
-
     EventManager.eventEmitter.publish(
       'ecommerce-app',
       'event-ecommerce',
       Buffer.from(JSON.stringify(dataUpdateInventory))
-    )
-    EventManager.eventEmitter.publish(
-      'ecommerce-app',
-      'event-ecommerce',
-      Buffer.from(JSON.stringify(dataOrderDispatched))
     )
   }
 }

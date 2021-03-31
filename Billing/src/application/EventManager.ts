@@ -9,7 +9,7 @@ export class EventManager {
   static handleEvents (data: OrderData) {
     switch (data.typeEvent) {
       case 'ORDER_PROCESSING_COMPLETED':
-        EventManager.orderProcess(data)
+        EventManager.orderProcess()
         break
 
       case 'PAYMENT_PROCESSING_COMPLETED':
