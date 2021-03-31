@@ -14,5 +14,6 @@ export type OrderData = {
 
 export type BillingData = {
   name: string
+  order: string
   typeEvent: EventsTypes
 }

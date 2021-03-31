@@ -1,44 +1,39 @@
 import { Channel } from 'amqplib/callback_api'
-import { EventsTypes } from './EventsTypes'
-import { OrderData } from './Types'
-import { UserWithBilling } from './UserWithBilling'
+import { OrderData, PaymentData } from './Types'
 
 export class EventManager {
   static eventEmitter: Channel
-  private dataUser: UserWithBilling
 
-  constructor(eventEmitter: Channel, data: { name: string; money: number }) {
-    EventManager.eventEmitter = eventEmitter
+  constructor () {}
 
-    this.dataUser = new UserWithBilling(data.name, data.money)
-  }
-
-  static createEvent() {}
-
-  static handleEvents(data: OrderData) {
-    console.log(`Received Event ${data.typeEvent}`)
-    switch (data.typeEvent as EventsTypes) {
+  static handleEvents (data: OrderData) {
+    switch (data.typeEvent) {
       case 'ORDER_PROCESSING_COMPLETED':
-        this.productPayment(data)
+        EventManager.orderProcess(data)
         break
+
       case 'PAYMENT_PROCESSING_COMPLETED':
+        console.log(data.typeEvent)
+        break
+
+      default:
+        console.log('Unknown event type')
         break
     }
   }
 
-  static productPayment(data: OrderData) {
-    console.log(`price product is ${data.price}`)
+  static orderProcess (data: OrderData) {
+    console.log(data)
+    const order = EventManager.createOrder()
 
-    EventManager.eventEmitter.publish(
-      'ecommerce-app',
-      'event-ecommerce',
-      Buffer.from(
-        JSON.stringify({
-          name: 'billing event',
-          typeEvent: 'BILLING',
-        })
-      )
-    )
-    console.log('payment article')
+    EventManager.eventEmitter.publish('ecommerce-app', 'event-ecommerce', Buffer.from(JSON.stringify(order)))
+  }
+
+  static createOrder(): PaymentData {
+    return {
+      typeEvent: 'PAYMENT_PROCESSING_COMPLETED',
+      name: 'order 154879',
+      order: 'best offer'
+    }
   }
 }
