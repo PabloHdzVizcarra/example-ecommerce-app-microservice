@@ -22,8 +22,7 @@ export class EventManager {
     }
   }
 
-  static orderProcess (data: OrderData) {
-    console.log(data)
+  static orderProcess () {
     const order = EventManager.createOrder()
 
     EventManager.eventEmitter.publish('ecommerce-app', 'event-ecommerce', Buffer.from(JSON.stringify(order)))
